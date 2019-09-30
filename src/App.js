@@ -7,10 +7,11 @@ const App = () => {
 
     const [cryptoData, setCryptoData] = useState();
     useEffect(() => {
-        const fsymsList = 'BTC,ETH,XRP,BCH,ZEC,EOS,XMR,ETC,LTC,DASH,QTUM,NEO,XLM,TRX,ADA,BTS,USDT';
-        const tsymsList = 'USD,EUR,UAH,RUB';
+        const fsymsList = 'BTC,ETH,XRP';/*,BCH,ZEC,EOS,XMR,ETC,LTC,DASH,QTUM,NEO,XLM,TRX,ADA,BTS,USDT*/
+        const tsymsList = 'USD,EUR,UAH,RUB';/*,JPY,GBP,CHF,CAD,AUD,NOK,NZD,SGD,ILS,PLN,KRW,SAR,ZAR*/
         axios
-            .get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${fsymsList}&tsyms=${tsymsList}`)
+            // .get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${fsymsList}&tsyms=${tsymsList}`)
+            .get('http://localhost:5000/crypto', { params: { fsyms: fsymsList, tsyms: tsymsList } })
             .then(res => {
                 setCryptoData({cryptoData: res.data});
             });
@@ -19,7 +20,7 @@ const App = () => {
     const [currentData, setCurrentData] = useState({
         selectedCoin: '',
         price:{},
-        selectedVolume: 0,
+        selectedVolume: 1,
         selectedOutCoin: '',
         resultData: 0
     });
@@ -58,6 +59,8 @@ const App = () => {
         const input = parseFloat(e.target.value);
         if(isFinite(input)){
             setCurrentData({...currentData, selectedVolume: input});
+        }else if(e.target.value === ''){
+            setCurrentData({...currentData, selectedVolume: 1});
         }
     };
 
